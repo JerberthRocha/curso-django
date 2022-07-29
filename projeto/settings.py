@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # A PARTIR DESTE PONTO ESTÃO OS APPS CADASTRADOS MANUALMENTE 
+    'recipes',
 ]
 
 MIDDLEWARE = [
