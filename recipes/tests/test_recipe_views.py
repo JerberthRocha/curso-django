@@ -1,4 +1,5 @@
 from unicodedata import category
+from urllib import response
 from django.test import TestCase
 from django.urls import reverse, resolve
 from recipes import views
@@ -36,7 +37,7 @@ class RecipeViewsTest(TestCase):
             email='user@email.com',
         )
         
-        recipe = Recipe.objects.create(
+        Recipe.objects.create(
             category = category,
             author = author,
             title = 'Recipe Title',
@@ -50,6 +51,16 @@ class RecipeViewsTest(TestCase):
             preparation_steps_is_html = False,
             is_published = True,
         )
+
+        response = self.client.get(reverse('recipes:home'))
+        content = response.content.decode('utf-8')
+        response_context_recipes = response.context['recipes']
+
+        self.assertIn('Recipe Title', content)
+        self.assertIn('10 Minutos', content)
+        self.assertIn('5 Porções', content)
+        self.assertEqual(len(response_context_recipes), 1)
+
 
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(reverse('recipes:recipe', kwargs={'id': 1000}))
