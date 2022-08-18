@@ -1,5 +1,7 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.http.response import Http404
+from utils.pagination import make_pagination_range
+from django.core.paginator import Paginator
 from django.db.models import Q
 from recipes.models import Recipe
 
@@ -7,8 +9,23 @@ from recipes.models import Recipe
 def home(request):
     recipes = Recipe.objects.filter(is_published=True).order_by('-id')
 
+    try:
+        current_page = int(request.GET.get('page', 1))
+    except ValueError:
+        current_page = 1
+
+    paginator = Paginator(recipes, 3)  # Qtde de receitas mostradas por página
+    page_obj = paginator.get_page(current_page)
+
+    pagination_range = make_pagination_range(
+        paginator.page_range,
+        4,
+        current_page
+    )
+
     return render(request, 'recipes/pages/home.html', context={
-        'recipes': recipes,
+        'recipes': page_obj,
+        'pagination_range': pagination_range
     })
 
 
