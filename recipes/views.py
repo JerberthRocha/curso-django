@@ -4,11 +4,12 @@ from utils.pagination import make_pagination
 from django.db.models import Q
 from recipes.models import Recipe
 
+PER_PAGES = 3
 
 def home(request):
     recipes = Recipe.objects.filter(is_published=True).order_by('-id')
 
-    page_obj, pagination_range = make_pagination(request, recipes, 3)
+    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
 
     return render(request, 'recipes/pages/home.html', context={
         'recipes': page_obj,
@@ -24,7 +25,7 @@ def category(request, category_id):
         ).order_by('-id')
     )
 
-    page_obj, pagination_range = make_pagination(request, recipes, 3)
+    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
 
     return render(request, 'recipes/pages/category.html', context={
         'recipes': page_obj,
@@ -56,7 +57,7 @@ def search(request):
         is_published=True,
     ).order_by('-id')
 
-    page_obj, pagination_range = make_pagination(request, recipes, 3)
+    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
 
     return render(request, 'recipes/pages/search.html', {
         'page_title': f'Search for "{search_term}"',
