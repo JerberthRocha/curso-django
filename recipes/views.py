@@ -1,7 +1,6 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from django.http.response import Http404
 from utils.pagination import make_pagination
-from django.contrib import messages
 from django.db.models import Q
 from recipes.models import Recipe
 import os
@@ -10,8 +9,6 @@ PER_PAGE = int(os.environ.get('PER_PAGE', 3))
 
 def home(request):
     recipes = Recipe.objects.filter(is_published=True).order_by('-id')
-
-    messages.success(request, 'Testanto mensagem flash na home')
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
