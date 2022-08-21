@@ -8,7 +8,7 @@
     </div>
 
     <div class="main-content content">
-        <form action="" method="POST">
+        <form action="{% url 'authors:create' %}" method="POST">
             {% csrf_token %}
             
             <div class="form-content form-content-grid">
@@ -27,8 +27,20 @@
                 {% endfor %}
             </div>
 
-            <div class="form-group">
-                <button>Send</button>
+            {% if form.errors %}
+                <div class="form-content form-content-grid">
+                    <div class="form-group">
+                        <div class="message message-error">
+                            There are errors in form. Please, fix them and send again.
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            <div class="form-content form-content-grid">
+                <div class="form-group">
+                    <button type="submit">Send</button>
+                </div>
             </div>
         </form>
     </div>
