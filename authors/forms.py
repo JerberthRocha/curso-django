@@ -35,7 +35,7 @@ class RegisterForm(forms.ModelForm):
         )
     )
 
-    cofirm_password = forms.CharField(
+    confirm_password = forms.CharField(
         required=True,
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Repeat your password.'
@@ -92,3 +92,19 @@ class RegisterForm(forms.ModelForm):
             )
 
         return data
+    
+    def clean(self):
+        cleaned_data = super().clean()
+
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if password != confirm_password:
+            password_confirmation_error = ValidationError(
+                'The fields password and confirm password must be equal',
+                code='invalid'
+            )
+            raise ValidationError({
+                'password': password_confirmation_error,
+                'confirm_password': password_confirmation_error
+            })
