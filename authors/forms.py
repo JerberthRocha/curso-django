@@ -37,8 +37,30 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['confirm_password'],
                         'Repeat your password')
 
+    first_name = forms.CharField(
+        error_messages={'required': 'Write your first name'},
+        label='First Name',
+    )
+
+    last_name = forms.CharField(
+        error_messages={'required': 'Write your last name'},
+        label='Last Name',
+    )
+
+    username = forms.CharField(
+        error_messages={'required': 'This field must not be empty'},
+        label='Username',
+        help_text='Obrigatório. 150 caracteres ou menos. '
+                  'Letras, números e @/./+/-/_ apenas.'
+    )
+
+    email = forms.EmailField(
+        error_messages={'required': 'E-mail is required'},
+        label='E-mail',
+        help_text='The e-mail must be valid.'
+    )
+
     password = forms.CharField(
-        required=True,
         widget=forms.PasswordInput(),
         error_messages={
             'required': 'Password must not be empty'
@@ -53,10 +75,9 @@ class RegisterForm(forms.ModelForm):
     )
 
     confirm_password = forms.CharField(
-        required=True,
         widget=forms.PasswordInput(),
         error_messages={
-            'required': 'Password must not be empty'
+            'required': 'Please, repeat your password'
         },
         label='Confirm Password'
     )
@@ -70,26 +91,6 @@ class RegisterForm(forms.ModelForm):
             'email',
             'password',
         ]
-
-        labels = {
-            'username': 'Username',
-            'first_name': 'First Name',
-            'last_name': 'Last Name',
-            'email': 'E-mail',
-        }
-
-        help_texts = {
-            'email': 'The e-mail must be valid.'
-        }
-
-        error_messages = {
-            'username': {
-                'required': 'This field must not be empty',
-            },
-            'password': {
-                'required': 'This field must not be empty',
-            }
-        }
 
     def clean(self):
         cleaned_data = super().clean()
