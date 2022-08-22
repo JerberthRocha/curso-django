@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import re
 
+
 def add_attr(field, attr_name, attr_new_value):
     existing = field.widget.attrs.get(attr_name, '')
     field.widget.attrs[attr_name] = f'{existing} {attr_new_value}'.strip()
@@ -32,13 +33,13 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['email'], 'Your e-mail')
         add_placeholder(self.fields['first_name'], 'Ex.: Michael')
         add_placeholder(self.fields['last_name'], 'Ex.: Scofield')
-        add_attr(self.fields['username'], 'css', 'a-css-class')
+        add_placeholder(self.fields['password'], 'Your password')
+        add_placeholder(self.fields['confirm_password'],
+                        'Repeat your password')
 
     password = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Your password.'
-        }),
+        widget=forms.PasswordInput(),
         error_messages={
             'required': 'Password must not be empty'
         },
@@ -52,9 +53,7 @@ class RegisterForm(forms.ModelForm):
 
     confirm_password = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Repeat your password.'
-        }),
+        widget=forms.PasswordInput(),
         error_messages={
             'required': 'Password must not be empty'
         },
@@ -89,12 +88,6 @@ class RegisterForm(forms.ModelForm):
             'password': {
                 'required': 'This field must not be empty',
             }
-        }
-
-        widgets = {
-            'password': forms.PasswordInput(attrs={
-                'placeholder': 'Your password'
-            }),
         }
 
     def clean_password(self):
