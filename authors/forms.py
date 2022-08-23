@@ -89,6 +89,7 @@ class RegisterForm(forms.ModelForm):
         label='Confirm Password'
     )
 
+
     class Meta:
         model = User
         fields = [
@@ -98,6 +99,19 @@ class RegisterForm(forms.ModelForm):
             'email',
             'password',
         ]
+
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exists = User.objects.filter(email=email).exists()
+
+        if exists:
+            raise ValidationError(
+                'User e-mail is already in use',
+                code='Invalid',
+            )
+        
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
