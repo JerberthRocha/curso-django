@@ -48,10 +48,17 @@ class RegisterForm(forms.ModelForm):
     )
 
     username = forms.CharField(
-        error_messages={'required': 'This field must not be empty'},
         label='Username',
-        help_text='Obrigatório. 150 caracteres ou menos. '
-                  'Letras, números e @/./+/-/_ apenas.'
+        help_text=(
+            'Username must have letters, numbers and one of those @.+-_.'
+            'The length should be between 4 and 150 characters.'
+        ),
+        error_messages={
+            'required': 'This field must not be empty',
+            'min_length': 'Username must have at least 4 characters',
+            'max_length': 'Username must have less than 150 characters'
+        },
+        min_length=4, max_length=150,
     )
 
     email = forms.EmailField(
@@ -82,6 +89,7 @@ class RegisterForm(forms.ModelForm):
         label='Confirm Password'
     )
 
+
     class Meta:
         model = User
         fields = [
@@ -91,6 +99,19 @@ class RegisterForm(forms.ModelForm):
             'email',
             'password',
         ]
+
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exists = User.objects.filter(email=email).exists()
+
+        if exists:
+            raise ValidationError(
+                'User e-mail is already in use',
+                code='Invalid',
+            )
+        
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
