@@ -344,6 +344,7 @@ h6 {
 
 .errorlist{
   color: var(--color-error-dark);
+  font-size: 1.6rem;
 }
 
 .form-content input{
@@ -353,6 +354,18 @@ h6 {
   border: 1px solid var(--color-primary-dark);
 }
 
+.inline-form {
+  display: inline;
+}
+
+.plaintext-button {
+  display: inline;
+  border: none;
+  background: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--color-primary);
+}
 
 /* Messages */
 
