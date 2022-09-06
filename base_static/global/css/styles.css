@@ -424,7 +424,7 @@ h6 {
   margin: 2rem 0;
 }
 
-.author-dashboard-container {
+.authors-dashboard-container {
   max-width: 64rem;
   text-align: left;
   padding: var(--spacing-gutter-medium);
