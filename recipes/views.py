@@ -3,6 +3,7 @@ from utils.pagination import make_pagination
 from django.db.models import Q
 from recipes.models import Recipe
 from django.views.generic import ListView, DetailView
+from django.http import JsonResponse
 import os
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 3))
@@ -36,6 +37,19 @@ class RecipeListViewBase(ListView):
 
 class RecipeListViewHome(RecipeListViewBase):
     template_name = 'recipes/pages/home.html'
+
+
+class RecipeListViewHomeApi(RecipeListViewBase):
+    template_name = 'recipes/pages/home.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        recipes = self.get_context_data()['recipes']
+        recipes_dict = recipes.object_list.values()
+
+        return JsonResponse(
+            list(recipes_dict),
+            safe=False
+        )
 
 
 class RecipeListViewCategory(RecipeListViewBase):
