@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # APPS CRIADOS/REGISTRADOS PELO DESENVOLVEDOR
     'recipes',
     'authors',
+    'tag',
     'debug_toolbar',
 ]
 
